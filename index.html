@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>لغتي الجميلة – الوحدة الأولى</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#fff8ec;--card:#fff;--ink:#2b2d42;--o:#ff7a2f;--b:#17a2c9;--g:#2fb86b;--y:#ffc93c;--r:#ef476f;--p:#8b5cf6}
+:root:not([data-theme="light"]){}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1e2235;--card:#2a2f48;--ink:#fff4e0}}
+:root[data-theme="dark"]{--bg:#1e2235;--card:#2a2f48;--ink:#fff4e0}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",Tahoma,"Noto Naskh Arabic",Arial,sans-serif;font-size:20px;line-height:1.9}
+header{background:linear-gradient(135deg,var(--o),var(--y));padding:14px;text-align:center;color:#fff;font-size:28px;font-weight:800;cursor:pointer}
+main{max-width:900px;margin:auto;padding:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:14px}
+.big{border:0;border-radius:26px;padding:26px 10px;font:inherit;font-size:26px;font-weight:800;color:#fff;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.18);transition:transform .1s}
+.big:hover{transform:scale(1.04)}.big span{display:block;font-size:56px;line-height:1.2}
+.card{background:var(--card);border-radius:22px;padding:16px 20px;margin:14px 0;box-shadow:0 3px 10px rgba(0,0,0,.1);overflow-wrap:anywhere}
+h2{margin:6px 0;color:var(--o)}h3{margin:4px 0;color:var(--b)}
+.btn{border:0;border-radius:16px;padding:8px 18px;font:inherit;font-weight:700;color:#fff;background:var(--b);cursor:pointer;margin:4px}
+.btn.g{background:var(--g)}.btn.o{background:var(--o)}.btn.r{background:var(--r)}.btn.p{background:var(--p)}
+.opt{display:block;width:100%;text-align:right;border:3px solid #e6dcc8;background:var(--card);color:var(--ink);border-radius:16px;padding:8px 14px;margin:8px 0;font:inherit;cursor:pointer}
+.opt.ok{border-color:var(--g);background:#d9f7e6;color:#145c33}.opt.no{border-color:var(--r);background:#ffe0e8;color:#7a1230}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}.tabs .btn.on{outline:4px solid var(--y)}
+.ans{display:none;background:#e6f7ff;color:#0b4f66;border-radius:12px;padding:6px 12px;margin-top:6px}.ans.show{display:block}
+input{font:inherit;width:100%;padding:10px;border-radius:14px;border:3px solid #e6dcc8;margin:6px 0;background:var(--card);color:var(--ink)}
+.hl{color:var(--r);font-weight:800}.mark{background:#fff3b0;color:#333;border-radius:6px;padding:0 6px}
+table{border-collapse:collapse;width:100%;font-size:16px}td,th{border:1px solid #ccc;padding:4px 8px}
+.wrap{overflow-x:auto}.bar{height:14px;background:#ddd;border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--g)}
+.hide{display:none}.pop{position:fixed;top:30%;left:0;right:0;text-align:center;font-size:90px;pointer-events:none;animation:up 1s forwards}
+@keyframes up{to{transform:translateY(-120px);opacity:0}}
+</style></head><body>
+<header onclick="go('home')">🌟 لغتي الجميلة – الوحدة الأولى 🌟</header>
+<main id="app"></main>
+<script>
+const $=s=>document.querySelector(s),app=$('#app');
+let AC;function snd(ok){try{AC=AC||new AudioContext();const n=ok?[523,659,784]:[220,180];n.forEach((f,i)=>{const o=AC.createOscillator(),g=AC.createGain();o.frequency.value=f;o.type='triangle';o.connect(g);g.connect(AC.destination);g.gain.value=.15;o.start(AC.currentTime+i*.12);o.stop(AC.currentTime+i*.12+.15)})}catch(e){}}
+function pop(ok){snd(ok);const d=document.createElement('div');d.className='pop';d.textContent=ok?['🎉','⭐','👏','🌟'][Math.random()*4|0]:'💪';document.body.append(d);setTimeout(()=>d.remove(),1000)}
+function note(m){let d=document.getElementById('vn');if(!d){d=document.createElement('div');d.id='vn';d.style.cssText='position:fixed;bottom:16px;left:12px;right:12px;background:#ef476f;color:#fff;padding:10px 14px;border-radius:14px;text-align:center;z-index:9;font-size:18px';document.body.append(d)}d.textContent=m;clearTimeout(d.t);d.t=setTimeout(()=>d.remove(),7000)}
+function stopSay(){try{speechSynthesis.cancel()}catch(e){}}
+function say(t){
+ if(!('speechSynthesis' in window)||typeof SpeechSynthesisUtterance==='undefined')return note('المتصفح لا يدعم القراءة الصوتية. جرّب Chrome أو Edge.');
+ const run=()=>{const v=speechSynthesis.getVoices().find(x=>/^ar/i.test(x.lang));
+  if(!v)return note('لا يوجد صوت عربي على هذا الجهاز. استخدم زر 🎧 لفتح درس الاستماع، أو ثبّت صوتًا عربيًا من إعدادات النظام.');
+  speechSynthesis.cancel();
+  t.split(/[.؟!]\s*/).filter(Boolean).forEach(p=>{const u=new SpeechSynthesisUtterance(p);u.voice=v;u.lang=v.lang;u.rate=.8;u.onerror=e=>{if(e.error!=='canceled'&&e.error!=='interrupted')note('تعذر تشغيل الصوت: '+e.error)};speechSynthesis.speak(u)})};
+ if(speechSynthesis.getVoices().length)run();else{let d=0;speechSynthesis.onvoiceschanged=()=>{if(!d){d=1;run()}};setTimeout(()=>{if(!d){d=1;run()}},800)}}
+const nrm=s=>String(s).replace(/[\u064B-\u0652\u0640]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').trim();
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ===== الشرح ===== */
+const LESSONS=[
+{t:'🌱 ازرع نبتة',u:'https://drive.google.com/file/d/16j3925ktCe0DOcCGhhoDIV3PrmYXB0sp/view?usp=drivesdk',s:`مريم تحب النباتات والورد، فأرادت أن تزرع نبتة في شباك غرفتها. بحثت في الإنترنت عن طريقة الزراعة، وطلبت من والدها بعض البذور. أحضرت زجاجة بلاستيكية فارغة وشفافة لتراقب ما يحدث بداخلها، ووضعت فيها قطعة قطن والبذور والماء. بعد فترة لم تنبت البذور فحزنت، فقال لها والدها: «يا مريم حاولي مرة أخرى، ربما تكون البذور غير صالحة». أسرعت مريم ووضعت بذورًا أخرى واستمرت في رعايتها، وبعد أيام خرجت نبتة صغيرة. ظلت تسقيها كل يوم حتى تفتحت وردة حمراء جميلة. قفزت مريم من الفرح، فقال والدها: «أنا سعيد بك؛ لأنك حاولت مرة أخرى وكان عندك أمل حتى نجحتِ».`,
+ pts:['الفكرة الرئيسية: المحاولة والأمل يوصلان إلى النجاح.','لماذا كانت الزجاجة شفافة؟ لتراقب مريم ما يحدث بداخلها.','لماذا حزنت مريم؟ لأن البذور لم تنبت.','ماذا فعلت بعد الحزن؟ وضعت بذورًا أخرى واستمرت في الرعاية.']},
+{t:'🎨 من فضلك كرر المحاولة',u:'https://drive.google.com/file/d/1TpzNhDhLG0XVqxwByZC7CPfjBBfkw85B/view?usp=drivesdk',s:`بعد إعلان نتيجة المسابقة وقفت هبة تحكي لزملائها رحلة نجاحها وقالت: هذا اليوم من أسعد الأيام؛ فأنا أحب الرسم كثيرًا. أعلنت معلمتي عن مسابقة «ارسم حلمك»، وأن اللوحات الفائزة ستعلق على جدار المدرسة. تخيلت نفسي طبيبة تعالج المرضى وبدأت أرسم، لكن اللوحة لم تعجبني فمزقت الورقة وقلت لنفسي: «لن أفوز.. كل زملائي أفضل مني». جلس والدي بجواري وقال: «يا هبة، الذي يريد أن ينجح عليه أن يكرر المحاولات ويتعلم من أخطائه»، وأعطاني كراسة جديدة. في كل مساء كنت أرسم وتتحسن مهارتي شيئًا فشيئًا. وبعد أسبوع قدمت لوحتي، وصفق الجميع لهبة وهي تقول: «لقد تعلمت اليوم درسًا مهمًا: ألا أستسلم، ألا أفقد الأمل، وأن أحاول حتى أنجح».`,
+ pts:['الفكرة الرئيسية: لا نستسلم ونحاول حتى ننجح.','تعلمنا من الأخطاء: كرر المحاولة ولا تمزق عملك.','مفردات: جِدار = حائط، مزّقت = قطّعت، بجواري = بجانبي.']},
+{t:'🦸 البطل الخفي',u:'https://drive.google.com/file/d/1P8snthHaeEqU0Gbd_QrcriKZHS3IFHS7/view?usp=drivesdk',s:`نحب معلم اللغة العربية الأستاذ أحمد ويحبنا كثيرًا. قدم لنا لغزًا: «ليس معلمًا ولا مديرًا لكنه بطل؛ إذا غاب نشعر أن هناك شيئًا مهمًا ناقصًا، وبدونه لا نستطيع أن نلعب في فناء المدرسة، وهو يحرسنا ويحرس مدرستنا». همس التلاميذ، فقال المعلم: «إنه أول من يصل إلى المدرسة وآخر من يغادرها». صاح أنس: «إنه العم أمين حارس المدرسة الأمين!». ابتسم الأستاذ أحمد وقال: «البطل هو الشخص الذي يساعد الآخرين، ويكون له دور في حياتهم».`,
+ pts:['البطل الخفي هو: العم أمين حارس المدرسة.','البطل هو من يساعد الآخرين.','مفردات: فناء = ساحة، يحرسنا = يحمينا، همس = تكلم بصوت منخفض، يغادرها = يخرج منها.','القيمة: نشكر كل من يخدمنا. الخير يبدأ بابتسامة.']},
+{t:'❓ أدوات الاستفهام (مَنْ – مَا – هَلْ – لِمَاذَا)',s:'مَنْ للسؤال عن العاقل (الإنسان). مَا للسؤال عن غير العاقل. هَلْ إجابتها بنعم أو لا. لِمَاذَا للسؤال عن السبب.',
+ pts:['مَنْ أمجد؟ ← أمجد طفل يحب المغامرات.','مَا هذا؟ ← هذا بطريق.','هَلْ هذا ضفدع؟ ← نعم، هذا ضفدع.','لِمَاذَا تمارس الرياضة؟ ← لأحافظ على صحتي.']},
+{t:'🔤 المقاطع الصوتية',s:'نقسم الكلمة إلى مقاطع صوتية عند النطق.',
+ pts:['حرف متحرك: سَ / مَ / كٌ ← سَمَكٌ.','متحرك بعده ساكن: مِلْ / حٌ ← مِلْحٌ.','متحرك بعده حرف مد: كِ / تَا / بٌ ← كِتَابٌ.','الحرف المنوّن: كٌ، حٌ، بٌ، ـةٌ.','الحرف المشدد يفك إلى حرفين: الأول ساكن والآخر متحرك: قِطَّةٌ ← قِطْ / طَ / ـةٌ.']},
+{t:'👫 أسماء الإشارة (هَؤُلَاءِ – أُولَئِكَ)',s:'هَؤُلَاءِ للجمع العاقل القريب. أُولَئِكَ للجمع العاقل البعيد.',
+ pts:['هَؤُلَاءِ أصدقائي. (قريبون)','أُولَئِكَ أصدقاءُ أخي. (بعيدون)']},
+{t:'📖 القصة المصورة',s:'القصة تتكون من: العنوان – البداية – الأحداث – النهاية. مثال: «مسابقة الرسم».',
+ pts:['العنوان: مسابقة الرسم.','البداية: كانت هبة متحمسة للاشتراك في مسابقة الرسم.','الأحداث: بدأت ترسم ولم تعجبها رسمتها، فنصحها والدها بتكرار المحاولة.','النهاية: استطاعت هبة الرسم بشكل جميل وفازت بالمسابقة.']},
+{t:'🎵 نشيد أسرار النجاح',u:'https://drive.google.com/file/d/1mRfF3PSMTt6RapeHICW504xdPvCtrn3P/view?usp=drive_link',s:'الناجح البطل رفيقه الأمل، يعيش يومه لحلمه سعى، يصون وقته، يطيع ربه، كنحلة العسل لم يعرف الكسل، ويتقن العمل إن قال أو فعل.',
+ pts:['من أسرار النجاح: الأمل، السعي لتحقيق الحلم، تنظيم الوقت، طاعة الله، ترك الكسل، إتقان العمل.','مفردات: رفيقه = صاحبه، سعى = اجتهد، يُتقن = يُحسن.']}];
+const LINKS=[];
+function linksHtml(){return LINKS.length?`<div class="card"><h3>🎧 دروس القراءة والاستماع</h3>${LINKS.map(l=>`<a class="btn p" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="${l[1]}">${l[0]}</a>`).join('')}</div>`:''}
+function explain(){app.innerHTML=`<h2>📚 الشرح</h2>`+linksHtml()+LESSONS.map((l,i)=>`<div class="card"><h3>${l.t}</h3><p>${esc(l.s)}</p><ul>${l.pts.map(p=>`<li>${esc(p)}</li>`).join('')}</ul><button class="btn o" onclick="say(LESSONS[${i}].s)">🔊 اقرأ بصوت عالٍ</button><button class="btn r" onclick="stopSay()">⏹ إيقاف</button>${l.u?`<a class="btn p" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="${l.u}">🎧 افتح درس القراءة والاستماع</a>`:''}</div>`).join('')+back()}
+
+/* ===== الأسئلة ===== */
+const TF=[['مريم وضعت البذور في زجاجة شفافة.',1],['البذور نبتت من أول مرة.',0],['قال والد مريم: حاولي مرة أخرى.',1],['مَنْ تُستعمل للسؤال عن غير العاقل.',0],['هَلْ يُجاب عنها بنعم أو لا.',1],['أُولَئِكَ للجمع العاقل البعيد.',1],['البطل الخفي هو المدير.',0],['مزقت هبة الورقة لأن اللوحة لم تعجبها.',1],['كلمة (قِطَّةٌ) فيها حرف مشدد.',1],['عناصر القصة: العنوان والبداية والأحداث والنهاية.',1],['هبة تخيلت نفسها طبيبة تعالج المرضى.',1],['أُولَئِكَ تُستعمل للجمع القريب.',0],['العم أمين هو أول من يصل إلى المدرسة وآخر من يغادرها.',1],['مَا تُستعمل للسؤال عن العاقل.',0],['كلمة (مِلْحٌ) فيها مقطع متحرك بعده ساكن.',1],['الخير يبدأ بابتسامة.',1]];
+const MC=[['مَنْ البطل الخفي في القصة؟',['المعلم أحمد','العم أمين','المدير','أنس'],1],['أداة السؤال عن السبب:',['مَنْ','مَا','هَلْ','لِمَاذَا'],3],['نقول للقريب:',['هَؤُلَاءِ','أُولَئِكَ'],0],['كلمة (سَمَكٌ) تُقسم إلى:',['سَ / مَ / كٌ','سَمْ / كٌ'],0],['مَا معنى (فناء المدرسة)؟',['ساحتها','بابها','سقفها','مكتبها'],0],['ماذا نصح والد هبة؟',['أن تستسلم','أن تكرر المحاولة','أن تترك الرسم','أن تنام'],1],['____ هذا؟ – هذا بطريق.',['مَنْ','مَا','هَلْ','لِمَاذَا'],1],['أين ستُعلق اللوحات الفائزة؟',['في البيت','في الحديقة','على جدار المدرسة','في المكتبة'],2],['ماذا نبتت من البذور بعد أيام؟',['شجرة','نبتة صغيرة','عشب فقط','لا شيء'],1],['من أسرار النجاح في النشيد:',['الكسل','الأمل','النوم','الإهمال'],1],['ماذا فعلت مريم بعد أن حزنت؟',['تركت الزراعة','وضعت بذورًا أخرى','رمت الزجاجة','نامت'],1],['في كلمة (كِتَابٌ) المقطع (تَا) فيه:',['حرف مد','حرف مشدد','تنوين','سكون'],0],['إجابة (نعم) أو (لا) تكون لأداة الاستفهام:',['مَنْ','مَا','هَلْ','لِمَاذَا'],2],['معنى (مزّقت) هو:',['قطّعت','رسمت','لوّنت','علّقت'],0],['أُولَئِكَ أصدقاءُ أخي. نكمل بـ ____ للبعيد:',['هَؤُلَاءِ','أُولَئِكَ'],1],['الناجح في النشيد يشبه:',['الأسد','نحلة العسل','الفراشة','الطائر'],1],['الدرس الثاني اسمه:',['من فضلك كرر المحاولة','ازرع نبتة','البطل الخفي','أسرار النجاح'],0]];
+const FB=[['____ أمجد؟ – أمجد طفل يحب المغامرات.','مَنْ',['مَنْ','مَا','هَلْ']],['____ تمارس الرياضة؟ – لأحافظ على صحتي.','لِمَاذَا',['مَنْ','لِمَاذَا','هَلْ']],['____ هذا ضفدع؟ – نعم.','هَلْ',['هَلْ','مَا','مَنْ']],['____ أصدقائي. (قريبون)','هَؤُلَاءِ',['هَؤُلَاءِ','أُولَئِكَ']],['____ أصدقاء أخي. (بعيدون)','أُولَئِكَ',['هَؤُلَاءِ','أُولَئِكَ']],['عناصر القصة: العنوان، البداية، ____ ، النهاية.','الأحداث',['الأحداث','الأصدقاء']],['الناجح البطل رفيقه ____ .','الأمل',['الأمل','الكسل']],['العم أمين هو حارس المدرسة ____ .','الأمين',['الأمين','الكبير']],['الحرف المشدد يُفك إلى حرفين أولهما ____ .','ساكن',['ساكن','متحرك']],['فِنَاءُ المدرسة معناها ____ .','ساحتها',['ساحتها','سقفها']],['البطل هو من ____ الآخرين.','يساعد',['يساعد','يضرب']],['مَنْ تُستعمل للسؤال عن ____ .','العاقل',['العاقل','غير العاقل']]];
+const SH=[['مَنْ زرعت النبتة؟','مريم.'],['لماذا حزنت مريم؟','لأن البذور لم تنبت.'],['ماذا تعلمت هبة؟','ألا تستسلم وأن تحاول حتى تنجح.'],['من البطل الخفي؟ ولماذا؟','العم أمين حارس المدرسة؛ لأنه يساعد الآخرين ويحرس المدرسة ويجعلها نظيفة وآمنة.'],['ما استخدام (لِمَاذَا)؟','للسؤال عن السبب.'],['اذكر عناصر القصة.','العنوان، البداية، الأحداث، النهاية.'],['اذكر سرًّا من أسرار النجاح.','الأمل / الاجتهاد / تنظيم الوقت / إتقان العمل.']];
+let tab='tf';
+function review(){app.innerHTML=`<h2>📝 المراجعة</h2><div class="tabs">${[['tf','✅ صواب / خطأ'],['mc','🔘 الاختيار من متعدد'],['fb','✏️ إكمال الفراغ'],['sh','💬 إجابة قصيرة']].map(([k,n])=>`<button class="btn ${tab==k?'on':''}" onclick="tab='${k}';review()">${n}</button>`).join('')}</div><div id="qs"></div>${back()}`;
+ let h='';
+ if(tab=='tf')TF.forEach((q,i)=>h+=`<div class="card"><b>${i+1}) ${q[0]}</b><div><button class="btn g" onclick="chk(this,${q[1]==1})">✔ صواب</button><button class="btn r" onclick="chk(this,${q[1]==0})">✘ خطأ</button><button class="btn p" onclick="rev(this)">👀 اكشف</button></div><div class="ans">الإجابة: ${q[1]?'صواب ✔':'خطأ ✘'}</div></div>`);
+ if(tab=='mc')MC.forEach((q,i)=>h+=`<div class="card"><b>${i+1}) ${q[0]}</b>${q[1].map((o,j)=>`<button class="opt" onclick="opt(this,${j==q[2]})">${o}</button>`).join('')}<button class="btn p" onclick="rev(this)">👀 اكشف الإجابة</button><div class="ans">الإجابة: ${q[1][q[2]]}</div></div>`);
+ if(tab=='fb')FB.forEach((q,i)=>h+=`<div class="card"><b>${i+1}) ${q[0]}</b><div>${q[2].map(o=>`<button class="btn o" onclick="chk(this,${o==q[1]})">${o}</button>`).join('')}<button class="btn p" onclick="rev(this)">👀 اكشف</button></div><div class="ans">الإجابة: ${q[1]}</div></div>`);
+ if(tab=='sh')SH.forEach((q,i)=>h+=`<div class="card"><b>${i+1}) ${q[0]}</b><br><input placeholder="اكتب إجابتك هنا..."><button class="btn p" onclick="rev(this)">👀 اكشف الإجابة</button><div class="ans">الإجابة النموذجية: ${q[1]}</div></div>`);
+ $('#qs').innerHTML=h}
+function rev(b){b.closest('.card').querySelector('.ans').classList.add('show')}
+function chk(b,ok){b.style.outline=ok?'4px solid #2fb86b':'4px solid #ef476f';pop(ok);if(ok)rev(b)}
+function opt(b,ok){b.classList.add(ok?'ok':'no');pop(ok);if(ok)rev(b)}
+
+/* ===== الاختبار ===== */
+let EX=null;
+function pick(a,n){return a.map(x=>[Math.random(),x]).sort((x,y)=>x[0]-y[0]).slice(0,n).map(x=>x[1])}
+function examGate(){app.innerHTML=`<h2>🏆 الاختبار</h2><div class="card"><p>اكتب اسمك وبريدك الإلكتروني ثم ابدأ.</p><label>👤 الاسم</label><input id="nm" autocomplete="name"><label>📧 البريد الإلكتروني</label><input id="em" type="email" dir="ltr" autocomplete="email"><div id="er" class="hl"></div><button class="btn g" onclick="startExam()">🚀 ابدأ الاختبار</button></div>${back()}`}
+function startExam(){const n=$('#nm').value.trim(),e=$('#em').value.trim();
+ if(n.length<2)return $('#er').textContent='من فضلك اكتب اسمك ✍️';
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e))return $('#er').textContent='من فضلك اكتب بريدًا إلكترونيًا صحيحًا 📧';
+ const qs=[...pick(TF,6).map(q=>({k:'صواب/خطأ',q:q[0],o:['صواب','خطأ'],a:q[1]?'صواب':'خطأ'})),...pick(MC,8).map(q=>({k:'اختيار من متعدد',q:q[0],o:q[1],a:q[1][q[2]]})),...pick(FB,6).map(q=>({k:'إكمال الفراغ',q:q[0],o:q[2],a:q[1]}))];
+ EX={n,e,qs,i:0,ans:[],start:new Date()};showQ()}
+function showQ(){const x=EX.qs[EX.i];app.innerHTML=`<div class="bar"><i style="width:${EX.i/EX.qs.length*100}%"></i></div><div class="card"><small>سؤال ${EX.i+1} من ${EX.qs.length} – ${x.k}</small><h3>${x.q}</h3>${x.o.map(o=>`<button class="opt" data-o="${esc(o)}">${o}</button>`).join('')}</div>`;
+ app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{EX.ans.push(b.dataset.o);snd(true);EX.i++;EX.i<EX.qs.length?showQ():finish()})}
+function finish(){const end=new Date();let ok=[],bad=[],det=[];EX.qs.forEach((x,i)=>{const g=EX.ans[i],c=nrm(g)==nrm(x.a);(c?ok:bad).push(`س${i+1}: ${x.q}`);det.push({q:`س${i+1}: ${x.q}`,type:x.k,given:g,right:x.a,ok:c})});
+ const rec={id:Date.now()+'_'+Math.random().toString(36).slice(2,6),name:EX.n,email:EX.e,score:ok.length,total:EX.qs.length,start:EX.start.toLocaleString('ar-EG'),end:end.toLocaleString('ar-EG'),secs:Math.round((end-EX.start)/1000),correct:ok,wrong:bad,det};
+ save(rec);const p=rec.score/rec.total;pop(p>=.5);
+ app.innerHTML=`<div class="card" style="text-align:center"><h2>${p>=.9?'🏅 ممتاز!':p>=.6?'👏 أحسنت!':'💪 حاول مرة أخرى!'}</h2><div style="font-size:60px">${'⭐'.repeat(Math.round(p*5))||'🌱'}</div><h2>${rec.name}: ${rec.score} من ${rec.total}</h2><p>تم حفظ نتيجتك ✅</p></div><div class="card"><h3>مراجعة إجاباتك</h3>${det.map(d=>`<p>${d.ok?'✅':'❌'} ${d.q}${d.ok?'':`<br><small>إجابتك: ${esc(d.given)} – الصحيح: <b>${esc(d.right)}</b></small>`}</p>`).join('')}</div>${back()}`}
+async function save(r){try{const a=JSON.parse(localStorage.getItem('res')||'[]');a.push(r);localStorage.setItem('res',JSON.stringify(a))}catch(e){}
+ try{const db=await claude.use('db');if(db)await db.collection('results').doc(r.id).set(r)}catch(e){}}
+
+/* ===== لوحة المعلم ===== */
+let ROWS=[];
+function teacher(){const c=prompt('🔐 أدخل رمز المعلم (الافتراضي 1234):');if(c!=='1234')return;
+ app.innerHTML=`<h2>👩‍🏫 لوحة تحكم المعلم</h2><div class="card"><button class="btn g" onclick="exportX()">📥 تصدير إلى Excel</button><button class="btn o" onclick="loadT()">🔄 تحديث</button><button class="btn r" onclick="if(confirm('مسح نتائج هذا المتصفح؟')){localStorage.removeItem('res');loadT()}">🗑 مسح المحلي</button><div id="tb" class="wrap"></div></div>${back()}`;loadT()}
+async function loadT(){const m={};try{JSON.parse(localStorage.getItem('res')||'[]').forEach(r=>m[r.id]=r)}catch(e){}
+ try{const db=await claude.use('db');if(db){const s=await db.collection('results').get();s.docs.forEach(d=>{const r=d.data();m[r.id]=r})}}catch(e){}
+ ROWS=Object.values(m).sort((a,b)=>a.id<b.id?1:-1);
+ $('#tb').innerHTML=ROWS.length?`<table><tr><th>الاسم</th><th>البريد</th><th>الدرجة</th><th>من</th><th>وقت البدء</th></tr>${ROWS.map(r=>`<tr><td>${esc(r.name)}</td><td dir="ltr">${esc(r.email)}</td><td>${r.score}</td><td>${r.total}</td><td>${esc(r.start)}</td></tr>`).join('')}</table>`:'<p>لا توجد نتائج بعد.</p>'}
+async function exportX(){if(!ROWS.length)return alert('لا توجد نتائج للتصدير');
+ const s1=ROWS.map(r=>({'اسم الطالب':r.name,'البريد الإلكتروني':r.email,'النتيجة':r.score,'الدرجة الكلية':r.total,'النسبة %':Math.round(r.score/r.total*100),'وقت بدء الاختبار':r.start,'وقت الانتهاء':r.end,'المدة (ثانية)':r.secs,'الأسئلة الصحيحة':r.correct.join(' | '),'الأسئلة الخاطئة':r.wrong.join(' | ')}));
+ const s2=[];ROWS.forEach(r=>r.det.forEach(d=>s2.push({'اسم الطالب':r.name,'البريد الإلكتروني':r.email,'السؤال':d.q,'النوع':d.type,'إجابة الطالب':d.given,'الإجابة الصحيحة':d.right,'الحالة':d.ok?'صحيحة':'خاطئة'})));
+ const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(s1),'النتائج');XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(s2),'تفاصيل الإجابات');wb.Workbook={Views:[{RTL:true}]};
+ const data=XLSX.write(wb,{type:'array',bookType:'xlsx'});
+ try{const d=await claude.use('downloads');if(!d)throw 0;await d.save({filename:'نتائج-الطلاب.xlsx',data:new Uint8Array(data)})}catch(e){if(e&&e.code=='declined')return;alert('تعذر التنزيل في هذا العرض. افتح الرابط من claude.ai وجرّب مجددًا.')}}
+
+/* ===== التنقل ===== */
+const back=()=>`<p style="text-align:center"><button class="btn" onclick="go('home')">🏠 الرئيسية</button></p>`;
+function go(v){stopSay();scrollTo(0,0);({home,explain,review,exam:examGate}[v]||home)()}
+function home(){app.innerHTML=`<h2 style="text-align:center">أهلًا بك يا بطل! 👋 اختر ما تريد:</h2><div class="grid"><button class="big" style="background:var(--b)" onclick="go('explain')"><span>📚</span>الشرح</button><button class="big" style="background:var(--g)" onclick="go('review')"><span>📝</span>المراجعة</button><button class="big" style="background:var(--o)" onclick="go('exam')"><span>🏆</span>الاختبار</button><button class="big" style="background:var(--p)" onclick="teacher()"><span>👩‍🏫</span>لوحة تحكم المعلم</button></div>`}
+home();
+</script></body></html>
